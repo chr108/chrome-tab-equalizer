@@ -6,6 +6,9 @@ import { DEFAULT_SETTINGS, STORAGE_KEY, normalizeSettings } from "./settings.js"
 
 const OFFSCREEN_DOCUMENT_PATH = "offscreen.html";
 
+/** @type {number | null} */
+let capturedTabId = null;
+
 /**
  * @typedef {Object} InitResponse
  * @property {boolean} ok
@@ -45,7 +48,7 @@ const ensureOffscreenDocument = async () => {
         await chrome.offscreen.createDocument({
             url: OFFSCREEN_DOCUMENT_PATH,
             reasons: [chrome.offscreen.Reason.AUDIO_PLAYBACK],
-            justification: "Play processed active tab audio with EQ and volume control",
+            justification: "Play processed active tab audio with EQ, distortion, and volume control",
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -80,13 +83,38 @@ const startForActiveTab = async (settings) => {
 
     await ensureOffscreenDocument();
 
+    if (capturedTabId === tabId) {
+        try {
+            await sendMessageToOffscreen({ type: "OFFSCREEN_UPDATE_SETTINGS", settings });
+            return;
+        } catch {
+            // offscreenが再生成された可能性があるため再キャプチャにフォールバック
+        }
+    }
+
+    if (capturedTabId !== null && capturedTabId !== tabId) {
+        try {
+            await sendMessageToOffscreen({ type: "OFFSCREEN_STOP" });
+        } catch {
+            // offscreen未起動時は無視
+        }
+    }
+
     const streamId = await chrome.tabCapture.getMediaStreamId({ targetTabId: tabId });
     await sendMessageToOffscreen({
         type: "OFFSCREEN_START",
         streamId,
         settings,
     });
+    capturedTabId = tabId;
 };
+
+chrome.tabs.onActivated.addListener(() => {
+    capturedTabId = null;
+    void sendMessageToOffscreen({ type: "OFFSCREEN_STOP" }).catch(() => {
+        // offscreen未起動時は無視
+    });
+});
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (!message || typeof message !== "object" || !Object.prototype.hasOwnProperty.call(message, "type")) {

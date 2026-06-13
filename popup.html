@@ -4,59 +4,101 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/src/popup.css" />
+    <link rel="stylesheet" href="src/popup.css" />
     <title>Tab EQ</title>
 </head>
 
 <body>
     <main class="popup">
-        <h1>タブEQ</h1>
-        <p id="status">初期化中...</p>
+        <header class="header-row">
+            <h1>タブEQ</h1>
+            <p id="status">初期化中...</p>
+        </header>
 
-        <label class="toggle">
-            <input id="eqEnabled" type="checkbox" checked />
-            EQを有効化
-        </label>
+        <div class="panel-grid">
+            <section class="panel">
+                <h2>EQ</h2>
+                <label class="toggle">
+                    <input id="eqEnabled" type="checkbox" checked />
+                    EQを有効化
+                </label>
 
-        <section>
-            <h2>5バンドEQ</h2>
-            <div class="slider-grid">
-                <label class="band-item">
-                    <span id="value-60">0 dB</span>
-                    <input id="band-60" type="range" min="-12" max="12" step="4" value="0" />
-                    <span>60Hz</span>
-                </label>
-                <label class="band-item">
-                    <span id="value-250">0 dB</span>
-                    <input id="band-250" type="range" min="-12" max="12" step="4" value="0" />
-                    <span>250Hz</span>
-                </label>
-                <label class="band-item">
-                    <span id="value-1000">0 dB</span>
-                    <input id="band-1000" type="range" min="-12" max="12" step="4" value="0" />
-                    <span>1kHz</span>
-                </label>
-                <label class="band-item">
-                    <span id="value-4000">0 dB</span>
-                    <input id="band-4000" type="range" min="-12" max="12" step="4" value="0" />
-                    <span>4kHz</span>
-                </label>
-                <label class="band-item">
-                    <span id="value-8000">0 dB</span>
-                    <input id="band-8000" type="range" min="-12" max="12" step="4" value="0" />
-                    <span>8kHz</span>
-                </label>
-            </div>
-        </section>
+                <div class="slider-grid">
+                    <label class="band-item">
+                        <span id="value-60">0 dB</span>
+                        <input id="band-60" type="range" min="-12" max="12" step="4" value="0" />
+                        <span>60Hz</span>
+                    </label>
+                    <label class="band-item">
+                        <span id="value-250">0 dB</span>
+                        <input id="band-250" type="range" min="-12" max="12" step="4" value="0" />
+                        <span>250Hz</span>
+                    </label>
+                    <label class="band-item">
+                        <span id="value-1000">0 dB</span>
+                        <input id="band-1000" type="range" min="-12" max="12" step="4" value="0" />
+                        <span>1kHz</span>
+                    </label>
+                    <label class="band-item">
+                        <span id="value-4000">0 dB</span>
+                        <input id="band-4000" type="range" min="-12" max="12" step="4" value="0" />
+                        <span>4kHz</span>
+                    </label>
+                    <label class="band-item">
+                        <span id="value-8000">0 dB</span>
+                        <input id="band-8000" type="range" min="-12" max="12" step="4" value="0" />
+                        <span>8kHz</span>
+                    </label>
+                    <label class="band-item">
+                        <span id="value-volume">0 dB</span>
+                        <input id="volume" type="range" min="-12" max="12" step="4" value="0" />
+                        <span>音量</span>
+                    </label>
+                </div>
+            </section>
 
-        <section>
-            <h2>音量</h2>
-            <label>出力 <span id="value-volume">0 dB</span><input id="volume" type="range" min="-12" max="12" step="1"
-                    value="0" /></label>
-        </section>
+            <section class="panel">
+                <h2>Distortion</h2>
+
+                <label class="toggle">
+                    <input id="distortionEnabled" type="checkbox" />
+                    Distortionを有効化
+                </label>
+
+                <fieldset id="distortionControls" class="control-stack">
+                    <div class="slider-grid">
+                        <label class="band-item">
+                            <span id="value-drive">0 dB</span>
+                            <input id="drive" type="range" min="0" max="36" step="4" value="0" />
+                            <span>Drive</span>
+                        </label>
+
+                        <label class="band-item">
+                            <span id="value-distortionAmount">0</span>
+                            <input id="distortionAmount" type="range" min="0" max="100" step="5" value="0" />
+                            <span>Amount</span>
+                        </label>
+
+                        <label class="band-item">
+                            <span id="value-outputGain">0 dB</span>
+                            <input id="outputGain" type="range" min="-24" max="6" step="3" value="0" />
+                            <span>Out</span>
+                        </label>
+                    </div>
+
+                    <label class="select-field">
+                        Mode
+                        <select id="distortionMode">
+                            <option value="soft">Soft</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </label>
+                </fieldset>
+            </section>
+        </div>
     </main>
 
-    <script type="module" src="/src/popup.js"></script>
+    <script type="module" src="src/popup.js"></script>
 </body>
 
 </html>

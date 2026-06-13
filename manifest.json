@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Chrome Tab Equalizer",
     "version": "0.1.0",
-    "description": "現在アクティブなタブ音声へリアルタイム5バンドEQを適用します",
+    "description": "現在アクティブなタブ音声へリアルタイム5バンドEQとDistortionを適用します",
     "permissions": [
         "tabCapture",
         "offscreen",

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab EQ</title>
+  </head>
+  <body>
+    <main class="popup">
+      <h1>タブEQ</h1>
+      <p id="status">初期化中...</p>
+
+      <label class="toggle">
+        <input id="eqEnabled" type="checkbox" checked />
+        EQを有効化
+      </label>
+
+      <section>
+        <h2>5バンドEQ</h2>
+        <div class="slider-grid">
+          <label>60Hz <span id="value-60">0 dB</span><input id="band-60" type="range" min="-12" max="12" step="1" value="0" /></label>
+          <label>250Hz <span id="value-250">0 dB</span><input id="band-250" type="range" min="-12" max="12" step="1" value="0" /></label>
+          <label>1kHz <span id="value-1000">0 dB</span><input id="band-1000" type="range" min="-12" max="12" step="1" value="0" /></label>
+          <label>4kHz <span id="value-4000">0 dB</span><input id="band-4000" type="range" min="-12" max="12" step="1" value="0" /></label>
+          <label>8kHz <span id="value-8000">0 dB</span><input id="band-8000" type="range" min="-12" max="12" step="1" value="0" /></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>音量</h2>
+        <label>出力 <span id="value-volume">0 dB</span><input id="volume" type="range" min="-12" max="12" step="1" value="0" /></label>
+      </section>
+    </main>
+
+    <script type="module" src="/src/popup.ts"></script>
+  </body>
+</html>

@@ -1,4 +1,3 @@
-import "./popup.css";
 import { BAND_FREQUENCIES, DEFAULT_SETTINGS, normalizeSettings } from "./settings.js";
 
 /**

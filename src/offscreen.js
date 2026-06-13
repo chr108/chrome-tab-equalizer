@@ -24,24 +24,6 @@ const createIdentityCurve = () => {
     return curve;
 };
 
-const createSoftCurve = (amount) => {
-    if (amount <= 0) {
-        return createIdentityCurve();
-    }
-
-    const curve = new Float32Array(DISTORTION_CURVE_SIZE);
-    const normalizedAmount = amount / 100;
-    const intensity = 1 + normalizedAmount * 24;
-    const ceiling = Math.tanh(intensity);
-
-    for (let index = 0; index < DISTORTION_CURVE_SIZE; index += 1) {
-        const x = (index / (DISTORTION_CURVE_SIZE - 1)) * 2 - 1;
-        curve[index] = Math.tanh(intensity * x) / ceiling;
-    }
-
-    return curve;
-};
-
 const createHardCurve = (amount) => {
     if (amount <= 0) {
         return createIdentityCurve();
@@ -57,14 +39,6 @@ const createHardCurve = (amount) => {
     }
 
     return curve;
-};
-
-const createDistortionCurve = (mode, amount) => {
-    if (mode === "hard") {
-        return createHardCurve(amount);
-    }
-
-    return createSoftCurve(amount);
 };
 
 const disconnectNode = (node) => {
@@ -133,7 +107,7 @@ const applySettings = (settings) => {
     });
 
     driveGainNode.gain.value = dbToGain(settings.driveDb);
-    waveShaperNode.curve = createDistortionCurve(settings.distortionMode, settings.distortionAmount);
+    waveShaperNode.curve = createHardCurve(settings.distortionAmount);
     waveShaperNode.oversample = "4x";
     distortionOutputGainNode.gain.value = dbToGain(settings.outputGainDb);
     masterVolumeNode.gain.value = dbToGain(settings.volumeDb);

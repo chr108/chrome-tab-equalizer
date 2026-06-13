@@ -24,7 +24,6 @@ const distortionEnabledEl = /** @type {HTMLInputElement} */ ($("distortionEnable
 const distortionControlsEl = /** @type {HTMLFieldSetElement} */ ($("distortionControls"));
 const driveEl = /** @type {HTMLInputElement} */ ($("drive"));
 const distortionAmountEl = /** @type {HTMLInputElement} */ ($("distortionAmount"));
-const distortionModeEl = /** @type {HTMLSelectElement} */ ($("distortionMode"));
 const outputGainEl = /** @type {HTMLInputElement} */ ($("outputGain"));
 
 const bandInputs = /** @type {Record<number, HTMLInputElement>} */ (
@@ -37,7 +36,6 @@ const settingsInputs = [
     distortionEnabledEl,
     driveEl,
     distortionAmountEl,
-    distortionModeEl,
     outputGainEl,
     ...Object.values(bandInputs),
 ];
@@ -48,8 +46,6 @@ const setStatus = (message, isError = false) => {
 };
 
 const toInt = (value) => Number.parseInt(value, 10);
-
-const toMode = (value) => (value === "hard" ? "hard" : "soft");
 
 /** @type {EqSettings} */
 let currentSettings = DEFAULT_SETTINGS;
@@ -78,7 +74,6 @@ const reflectSettingsToUI = () => {
     $("value-drive").textContent = `${currentSettings.driveDb} dB`;
     distortionAmountEl.value = String(currentSettings.distortionAmount);
     $("value-distortionAmount").textContent = String(currentSettings.distortionAmount);
-    distortionModeEl.value = currentSettings.distortionMode;
     outputGainEl.value = String(currentSettings.outputGainDb);
     $("value-outputGain").textContent = `${currentSettings.outputGainDb} dB`;
 
@@ -99,7 +94,6 @@ const readSettingsFromUI = () =>
         distortionEnabled: distortionEnabledEl.checked,
         driveDb: toInt(driveEl.value),
         distortionAmount: toInt(distortionAmountEl.value),
-        distortionMode: toMode(distortionModeEl.value),
         outputGainDb: toInt(outputGainEl.value),
         bands: {
             60: toInt(bandInputs[60].value),

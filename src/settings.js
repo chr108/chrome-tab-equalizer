@@ -2,10 +2,6 @@ export const BAND_FREQUENCIES = [60, 250, 1000, 4000, 8000];
 export const STORAGE_KEY = "lastSettings";
 
 /**
- * @typedef {"soft" | "hard"} DistortionMode
- */
-
-/**
  * @typedef {Object} EqSettings
  * @property {boolean} enabled
  * @property {Record<number, number>} bands
@@ -13,7 +9,6 @@ export const STORAGE_KEY = "lastSettings";
  * @property {boolean} distortionEnabled
  * @property {number} driveDb
  * @property {number} distortionAmount
- * @property {DistortionMode} distortionMode
  * @property {number} outputGainDb
  */
 
@@ -31,25 +26,16 @@ export const DEFAULT_SETTINGS = {
     distortionEnabled: false,
     driveDb: 0,
     distortionAmount: 0,
-    distortionMode: "soft",
     outputGainDb: 0,
 };
 
-const clampEqDb = (value) => Math.max(-12, Math.min(12, value));
+const clampEqDb = (value) => Math.max(-24, Math.min(24, value));
 const clampVolumeDb = (value) => Math.max(-12, Math.min(12, value));
 const clampDriveDb = (value) => Math.max(0, Math.min(36, value));
 const clampDistortionAmount = (value) => Math.max(0, Math.min(100, value));
 const clampOutputGainDb = (value) => Math.max(-24, Math.min(6, value));
 
 const toFiniteNumber = (value, fallback) => (Number.isFinite(value) ? value : fallback);
-
-const normalizeMode = (value) => {
-    if (typeof value === "string" && value.toLowerCase() === "hard") {
-        return "hard";
-    }
-
-    return "soft";
-};
 
 /**
  * @param {Partial<EqSettings> | undefined | null} value
@@ -73,7 +59,6 @@ export const normalizeSettings = (value) => {
         distortionAmount: clampDistortionAmount(
             toFiniteNumber(Number(value?.distortionAmount), DEFAULT_SETTINGS.distortionAmount)
         ),
-        distortionMode: normalizeMode(value?.distortionMode),
         outputGainDb: clampOutputGainDb(
             toFiniteNumber(Number(value?.outputGainDb), DEFAULT_SETTINGS.outputGainDb)
         ),

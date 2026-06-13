@@ -1,60 +1,36 @@
-# chrome-tab-equalizer
+# Chrome Tab Equalizer
 
-Google Chrome (Manifest V3) 向けに、**現在アクティブなタブ音声**へリアルタイムEQを適用する最小構成の拡張です。  
-`tabCapture + offscreen document + Web Audio API` で動作します。
+Google Chrome でアクティブなタブの音声にリアルタイムで5バンドEQを適用する拡張機能です。
 
 ## 機能
 
-- 5バンドEQ (60Hz / 250Hz / 1kHz / 4kHz / 8kHz)
-- 各バンド `-12dB ～ +12dB`
-- EQ ON/OFF
-- 音量調整 `-12dB ～ +12dB`
-- 最後に使った設定を `chrome.storage.local` に保存
-- popup UI は日本語
+- **5バンドEQ** : 60Hz、250Hz、1kHz、4kHz、8kHz の各周波数帯域を独立調整
+- **ゲイン調整** : 各バンド -12dB ～ +12dB
+- **マスターボリューム** : -12dB ～ +12dB
+- **ON/OFF切り替え** : EQ の即座有効/無効化
+- **設定保存** : 最後に使った設定を自動保存
 
-## ディレクトリ構成
+## インストール
 
-```text
-.
-├─ offscreen.html
-├─ popup.html
-├─ public/
-│  └─ manifest.json
-├─ src/
-│  ├─ background.ts
-│  ├─ offscreen.ts
-│  ├─ popup.css
-│  ├─ popup.ts
-│  └─ settings.ts
-├─ package.json
-├─ tsconfig.json
-└─ vite.config.ts
-```
+1. **Chrome に読み込む**
+    - Chrome で `chrome://extensions/` を開く
+    - 「デベロッパー モード」を有効化
+    - 「パッケージ化されていない拡張機能を読み込む」をクリック
+    - このリポジトリのルートフォルダ（`manifest.json` がある階層）を選択
 
-## セットアップ
-
-```bash
-npm install
-npm run build
-```
-
-ビルド後に `dist/` を Chrome の「パッケージ化されていない拡張機能を読み込む」で読み込んでください。
+2. **動作確認の基本フロー**
+    - オーディオ再生中のタブをアクティブにする
+    - 拡張popupを開く
+    - EQスライダーまたは音量スライダーを動かす
+    - popup再オープン後も設定が保持されることを確認する
 
 ## 使い方
 
-1. ブラウザゲームを開いたタブをアクティブにする
-2. 拡張アイコンを開く
-3. popup が初期化されると、そのアクティブタブ音声を取り込み開始
-4. EQ/音量スライダーを調整
+1. ブラウザゲームやオーディオコンテンツを開く
+2. 該当タブをアクティブにする
+3. 拡張アイコンをクリック
+4. EQ スライダーを調整して希望の音色に設定
 
-## 権限
+## ライセンス
 
-- `tabCapture`: タブ音声の取得
-- `offscreen`: offscreen document の作成
-- `storage`: 設定保存
-- `tabs`: アクティブタブID取得
-
-## 最低限のエラーハンドリング
-
-- popup / service worker / offscreen 間メッセージで失敗時にエラー文言を表示
-- offscreen 未起動時に設定更新が来ても、次回初期化時に再適用
+[MIT License](LICENSE)

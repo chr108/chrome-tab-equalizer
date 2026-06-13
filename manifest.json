@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "Chrome Tab Equalizer",
+    "version": "0.1.0",
+    "description": "現在アクティブなタブ音声へリアルタイム5バンドEQを適用します",
+    "permissions": [
+        "tabCapture",
+        "offscreen",
+        "storage",
+        "tabs"
+    ],
+    "background": {
+        "service_worker": "src/background.js",
+        "type": "module"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Tab EQ"
+    }
+}
